@@ -1,0 +1,32 @@
+version: "3"
+services:
+  postgres-db:
+    build:
+      dockerfile: ./docker/db.dockerfile
+      context: .
+    image: jb/postgres-db
+    container_name: "postgres-db"
+    environment:
+      POSTGRES_PASSWORD: "postegres" 
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_SCHEMA: "zs"
+    networks:
+      - net-database
+    ports:
+      - "5432:5432"
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "jesica.bampi@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "jesica123"
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres-db
+    networks:
+      - net-database
+networks:
+  net-database:
+    driver: bridge
+  

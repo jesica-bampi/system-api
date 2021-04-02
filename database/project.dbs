@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="newfile.sql" id="Project_21d9" database="PostgreSQL" >
+	<schema name="pg" >
+		<table name="categories" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_categories" />
+			<column name="description" type="varchar" length="100" jt="12" mandatory="y" />
+			<index name="pk_categories_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="customer" prior="client" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_customer" />
+			<column name="name" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="telephone" type="varchar" length="20" jt="12" />
+			<column name="adress" type="varchar" length="500" jt="12" />
+			<index name="pk_client_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="order_items" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_order_items" />
+			<column name="num_order" type="bigint" jt="-5" mandatory="y" />
+			<column name="product_id" prior="id_produto" type="bigint" jt="-5" mandatory="y" />
+			<column name="price" prior="entry_price" type="numeric" length="15" decimal="4" jt="2" mandatory="y" />
+			<column name="quantity" type="integer" jt="4" mandatory="y" />
+			<column name="total" prior="total_item" type="numeric" length="15" decimal="4" jt="2" mandatory="y" />
+			<column name="status" type="varchar" length="30" jt="12" />
+			<index name="pk_order_items_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_order_items_id_order" to_schema="pg" to_table="orders" >
+				<fk_column name="num_order" pk="id" />
+			</fk>
+			<fk name="fk_order_items_product_id" to_schema="pg" to_table="products" >
+				<fk_column name="product_id" pk="id" />
+			</fk>
+		</table>
+		<table name="orders" prior="order" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_orders" />
+			<column name="order_code" type="varchar" length="30" jt="12" mandatory="y" />
+			<column name="invoice" type="integer" jt="4" />
+			<column name="supplier_id" prior="id_supplier" type="bigint" jt="-5" mandatory="y" />
+			<column name="total" prior="total_order_value" type="numeric" length="15" decimal="4" jt="2" mandatory="y" />
+			<column name="date_update" type="date" jt="91" >
+				<defo><![CDATA[current_date]]></defo>
+			</column>
+			<column name="paymente_type_id" type="bigint" jt="-5" mandatory="y" />
+			<column name="total_paid" type="numeric" length="15" decimal="4" jt="2" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<column name="obs" type="varchar" length="100" jt="12" />
+			<index name="pk_o_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_order_id_supplier" to_schema="pg" to_table="suppliers" >
+				<fk_column name="supplier_id" pk="id" />
+			</fk>
+			<fk name="fk_orders_payment_type_id" to_schema="pg" to_table="payment_types" >
+				<fk_column name="paymente_type_id" pk="id" />
+			</fk>
+		</table>
+		<table name="pay_titles" prior="pay_titles to pay" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_pay_titles" />
+			<column name="order_id" type="bigint" jt="-5" mandatory="y" />
+			<column name="date_update" type="date" jt="91" >
+				<defo><![CDATA[current_date]]></defo>
+			</column>
+			<column name="value" type="numeric" length="15" decimal="4" jt="2" mandatory="y" />
+			<column name="obs" type="varchar" length="100" jt="12" />
+			<index name="pk_titles_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_pay_titles_order_id" to_schema="pg" to_table="orders" >
+				<fk_column name="order_id" pk="id" />
+			</fk>
+		</table>
+		<table name="payment_types" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_payment_types" />
+			<column name="description" type="varchar" length="100" jt="12" mandatory="y" />
+			<index name="pk_payment_type_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="products" prior="tbl" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_products" />
+			<column name="code" type="varchar" length="30" jt="12" mandatory="y" />
+			<column name="bar_code" type="varchar" length="30" jt="12" />
+			<column name="description" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="price" type="numeric" length="15" decimal="4" jt="2" mandatory="y" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<column name="category_id" type="bigint" jt="-5" mandatory="y" />
+			<column name="supplier_id" type="bigint" jt="-5" mandatory="y" />
+			<index name="pk_products_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_products_category_id" to_schema="pg" to_table="categories" >
+				<fk_column name="category_id" pk="id" />
+			</fk>
+		</table>
+		<table name="receive_titles" prior="tbl" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_receive_titles" />
+			<column name="sale_id" type="bigint" jt="-5" mandatory="y" />
+			<column name="date_updated" type="date" jt="91" >
+				<defo><![CDATA[current_date]]></defo>
+			</column>
+			<column name="value" type="numeric" length="15" decimal="4" jt="2" mandatory="y" />
+			<column name="obs" type="varchar" length="100" jt="12" />
+			<index name="pk_receive_titles_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_receive_titles_sale_id" to_schema="pg" to_table="sales" >
+				<fk_column name="sale_id" pk="id" />
+			</fk>
+		</table>
+		<table name="sales" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_sales" />
+			<column name="customer_id" prior="client_id" type="bigint" jt="-5" mandatory="y" />
+			<column name="total_value" type="numeric" length="15" decimal="4" jt="2" mandatory="y" />
+			<column name="seller" type="bigint" jt="-5" mandatory="y" />
+			<column name="payment_type_id" type="bigint" jt="-5" mandatory="y" />
+			<column name="date_update" type="date" jt="91" >
+				<defo><![CDATA[current_date]]></defo>
+			</column>
+			<column name="obs" type="varchar" length="100" jt="12" />
+			<index name="pk_sales_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_sales_id_customer" to_schema="pg" to_table="customer" >
+				<fk_column name="customer_id" pk="id" />
+			</fk>
+			<fk name="fk_sales_user_id" to_schema="pg" to_table="users" >
+				<fk_column name="seller" pk="id" />
+			</fk>
+			<fk name="fk_sales_payment_type_id" to_schema="pg" to_table="payment_types" >
+				<fk_column name="payment_type_id" pk="id" />
+			</fk>
+		</table>
+		<table name="sales_items" prior="tbl" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_sales_items" />
+			<column name="sale_id" type="bigint" jt="-5" mandatory="y" />
+			<column name="product_id" type="bigint" jt="-5" mandatory="y" />
+			<column name="quantity" type="integer" jt="4" mandatory="y" />
+			<column name="unit_value" type="numeric" length="15" decimal="4" jt="2" mandatory="y" />
+			<column name="discount" type="numeric" length="15" decimal="4" jt="2" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<column name="total" type="numeric" length="15" decimal="4" jt="2" mandatory="y" />
+			<index name="pk_sales_items_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_sales_items_product_id" to_schema="pg" to_table="products" >
+				<fk_column name="product_id" pk="id" />
+			</fk>
+			<fk name="fk_sales_items_sale_id" to_schema="pg" to_table="sales" >
+				<fk_column name="sale_id" pk="id" />
+			</fk>
+		</table>
+		<table name="stocks" prior="stock" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_stocks" />
+			<column name="product_id" type="bigint" jt="-5" mandatory="y" />
+			<column name="date_updated" type="date" jt="91" >
+				<defo><![CDATA[current_date]]></defo>
+			</column>
+			<column name="quantity" type="integer" jt="4" mandatory="y" />
+			<column name="sale_id" type="bigint" jt="-5" />
+			<column name="order_id" type="bigint" jt="-5" />
+			<index name="pk_stocks_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_stocks_product_id" to_schema="pg" to_table="products" >
+				<fk_column name="product_id" pk="id" />
+			</fk>
+			<fk name="fk_stocks_sale_id" to_schema="pg" to_table="sales" >
+				<fk_column name="sale_id" pk="id" />
+			</fk>
+			<fk name="fk_stocks_order_id" to_schema="pg" to_table="orders" >
+				<fk_column name="order_id" pk="id" />
+			</fk>
+		</table>
+		<table name="suppliers" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_suppliers" />
+			<column name="description" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="site" type="varchar" length="100" jt="12" />
+			<index name="pk_suppliers_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="users" >
+			<column name="id" type="bigint" jt="-5" mandatory="y" sequence="seq_users" />
+			<column name="name" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="e-mail" type="varchar" length="300" jt="12" mandatory="y" />
+			<column name="password" type="varchar" length="500" jt="12" mandatory="y" />
+			<index name="pk_users_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<sequence name="seq_categories" />
+		<sequence name="seq_customer" />
+		<sequence name="seq_order_items" />
+		<sequence name="seq_orders" />
+		<sequence name="seq_pay_titles" />
+		<sequence name="seq_payment_types" />
+		<sequence name="seq_products" />
+		<sequence name="seq_receive_titles" />
+		<sequence name="seq_sales" />
+		<sequence name="seq_sales_items" />
+		<sequence name="seq_stocks" />
+		<sequence name="seq_suppliers" />
+		<sequence name="seq_users" />
+	</schema>
+	<layout name="Parsed Script Layout" id="Layout_11cc" show_relation="columns" >
+		<entity schema="pg" name="categories" color="003300" x="416" y="272" />
+		<entity schema="pg" name="customer" color="003300" x="416" y="80" />
+		<entity schema="pg" name="order_items" color="003300" x="64" y="288" />
+		<entity schema="pg" name="orders" color="003300" x="48" y="80" />
+		<entity schema="pg" name="pay_titles" color="003300" x="48" y="464" />
+		<entity schema="pg" name="payment_types" color="003300" x="768" y="288" />
+		<entity schema="pg" name="products" color="003300" x="256" y="272" />
+		<entity schema="pg" name="receive_titles" color="003300" x="464" y="448" />
+		<entity schema="pg" name="sales" color="003300" x="560" y="80" />
+		<entity schema="pg" name="sales_items" color="003300" x="576" y="256" />
+		<entity schema="pg" name="stocks" color="003300" x="240" y="448" />
+		<entity schema="pg" name="suppliers" color="003300" x="240" y="80" />
+		<entity schema="pg" name="users" color="003300" x="768" y="96" />
+		<group name="Group_" color="003300" >
+			<entity schema="pg" name="categories" />
+			<entity schema="pg" name="customer" />
+			<entity schema="pg" name="order_items" />
+			<entity schema="pg" name="orders" />
+			<entity schema="pg" name="payment_types" />
+			<entity schema="pg" name="products" />
+			<entity schema="pg" name="sales" />
+			<entity schema="pg" name="sales_items" />
+			<entity schema="pg" name="suppliers" />
+			<entity schema="pg" name="users" />
+			<entity schema="pg" name="stocks" />
+			<entity schema="pg" name="pay_titles" />
+			<entity schema="pg" name="receive_titles" />
+		</group>
+		<script name="SQL_Editor" id="Editor_1516" language="SQL" confirmed="y" >
+			<string><![CDATA[CREATE  TABLE pg.products ( 
+	id                   bigint  NOT NULL ,
+	code                 varchar(30)  NOT NULL ,
+	barcode              varchar(30)   ,
+	description          varchar(100)  NOT NULL ,
+	price                numeric(15,4) DEFAULT 0,00 NOT NULL ,
+	quantity             integer DEFAULT 0 NOT NULL ,
+	category_id          bigint  NOT NULL ,
+	supplier_id          bigint  NOT NULL ,
+	CONSTRAINT pk_product_code PRIMARY KEY ( id )
+ );]]></string>
+		</script>
+		<script name="newfile.sql" id="Editor_86d" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA IF NOT EXISTS pg;
+
+CREATE  TABLE pg.categories ( 
+	id                   bigint  NOT NULL ,
+	description          varchar(100)  NOT NULL ,
+	CONSTRAINT pk_categories_id PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE pg.client ( 
+	id                   bigint  NOT NULL ,
+	name                 varchar(100)  NOT NULL ,
+	telephone            integer DEFAULT 00000000000000  ,
+	adress               varchar(500)   ,
+	CONSTRAINT pk_client_id PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE pg.payment_types ( 
+	id                   bigint  NOT NULL ,
+	description          varchar(100)  NOT NULL ,
+	CONSTRAINT pk_payment_type_id PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE pg.sales ( 
+	id                   bigint  NOT NULL ,
+	id_client            bigint  NOT NULL ,
+	total_value          numeric(15,4)  NOT NULL ,
+	CONSTRAINT pk_sales_id PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE pg.suppliers ( 
+	id                   bigint  NOT NULL ,
+	description          varchar(100)  NOT NULL ,
+	site                 varchar(100)   ,
+	CONSTRAINT pk_suppliers_id PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE pg.users ( 
+	id                   bigint  NOT NULL ,
+	name                 varchar(100)  NOT NULL ,
+	"e-mail"             varchar(300)  NOT NULL ,
+	"password"           varchar(500)  NOT NULL ,
+	CONSTRAINT pk_users_id PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE pg."order" ( 
+	id                   bigint  NOT NULL ,
+	order_code           varchar(30)  NOT NULL ,
+	invoice              integer   ,
+	id_supplier          bigint  NOT NULL ,
+	total_order_value    numeric(15,4)  NOT NULL ,
+	CONSTRAINT pk_o_id PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE pg.products ( 
+	id                   bigint  NOT NULL ,
+	code                 varchar(30)  NOT NULL ,
+	barcode              varchar(30)   ,
+	description          varchar(100)  NOT NULL ,
+	price                numeric(15,4) DEFAULT 0,00 NOT NULL ,
+	quantity             integer DEFAULT 0 NOT NULL ,
+	category_id          bigint  NOT NULL ,
+	supplier_id          bigint  NOT NULL ,
+	CONSTRAINT pk_product_code PRIMARY KEY ( id )
+ );
+
+CREATE  TABLE pg.order_items ( 
+	id                   bigint  NOT NULL ,
+	num_order            bigint  NOT NULL ,
+	id_produto           bigint  NOT NULL ,
+	entry_price          numeric(15,4)  NOT NULL ,
+	quantity             integer  NOT NULL ,
+	total_item           numeric(15,4)  NOT NULL ,
+	status               varchar(30)   ,
+	CONSTRAINT pk_order_items_id PRIMARY KEY ( id )
+ );
+
+ALTER TABLE pg."order" ADD CONSTRAINT fk_order_id_supplier FOREIGN KEY ( id_supplier ) REFERENCES pg.suppliers( id );
+
+ALTER TABLE pg.order_items ADD CONSTRAINT fk_order_items_id_product FOREIGN KEY ( id_produto ) REFERENCES pg.products( id );
+
+ALTER TABLE pg.order_items ADD CONSTRAINT fk_order_items_id_order FOREIGN KEY ( num_order ) REFERENCES pg."order"( id );
+
+ALTER TABLE pg.products ADD CONSTRAINT fk_products_category_id FOREIGN KEY ( category_id ) REFERENCES pg.categories( id );
+
+ALTER TABLE pg.products ADD CONSTRAINT fk_products_supplier_id FOREIGN KEY ( supplier_id ) REFERENCES pg.suppliers( id );
+
+ALTER TABLE pg.sales ADD CONSTRAINT fk_sales_id_client FOREIGN KEY ( id_client ) REFERENCES pg.client( id );
+]]></string>
+		</script>
+	</layout>
+</project>
