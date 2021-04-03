@@ -3,7 +3,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('categories', {
     id: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      allowNull: true,
       primaryKey: true
     },
     description: {
