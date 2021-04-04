@@ -6,9 +6,9 @@ const Models = () => {
 
 module.exports = {
   async get_All() {
-    const { categories } = Models();
+    const { users } = Models();
 
-    return await categories
+    return await users
       .findAll({
         raw: true,
       })
@@ -18,17 +18,17 @@ module.exports = {
   },
 
   async get_One(id) {
-    const { categories } = Models();
+    const { users } = Models();
 
-    return await categories.findByPk(id).then((result) => {
+    return await users.findByPk(id).then((result) => {
       return result;
     });
   },
 
   async add(body) {
-    const { categories } = Models();
+    const { users } = Models();
 
-    return await categories
+    return await users
       .create({ ...body })
       .then((result) => {
         return result;
@@ -39,9 +39,9 @@ module.exports = {
   },
 
   async update(body) {
-    const { categories } = Models();
+    const { users } = Models();
 
-    return await categories
+    return await users
       .update(
         { ...body },
         {
@@ -59,9 +59,9 @@ module.exports = {
   },
 
   async del(id) {
-    const { categories } = Models();
+    const { users } = Models();
 
-    return await categories
+    return await users
       .destroy({
         where: {
           id: id,
