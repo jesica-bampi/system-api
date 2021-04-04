@@ -3,7 +3,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('payment_types', {
     id: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true
     },
     description: {

@@ -2,8 +2,8 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('categories', {
     id: {
-      type: DataTypes.BIGINT,
-      allowNull: true,
+      type: DataTypes.BIGINT, 
+      autoIncrement: true,
       primaryKey: true
     },
     description: {

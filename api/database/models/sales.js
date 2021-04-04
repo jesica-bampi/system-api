@@ -3,7 +3,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('sales', {
     id: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true
     },
     customer_id: {

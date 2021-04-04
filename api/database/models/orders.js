@@ -3,7 +3,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('orders', {
     id: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true
     },
     order_code: {

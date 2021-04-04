@@ -1,5 +1,3 @@
-const { post } = require("../controllers/user");
-
 const Models = () => {
   const ConnectDB = require("../../database/connect").ConnectDB;
   const connection = new ConnectDB();
@@ -31,12 +29,12 @@ module.exports = {
     const { categories } = Models();
 
     return await categories
-      .create({ body })
+      .create({ ...body })
       .then((result) => {
         return result;
       })
       .catch((error) => {
-        return error;
+        throw new Error(error);
       });
   },
 
@@ -51,5 +49,21 @@ module.exports = {
       .catch((error) => {
         return error;
       });
+  },
+
+  async del(id) {
+    const { categories } = Models();
+
+    return await categories
+      .destroy({
+        where: {
+          id: id,
+        },
+      })
+      .then(() => {
+        return true;
+      }).catch((error)=> {
+        throw new Error(error);
+      })
   },
 };

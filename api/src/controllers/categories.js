@@ -1,4 +1,4 @@
-const { get_All, get_One, add, update } = require("../models/categories");
+//const { get_All, get_One, add, update, del } = require("../models/categories");
 const Model = require("../models/categories");
 
 module.exports = {
@@ -37,4 +37,13 @@ module.exports = {
       next(error);
     }
   },
+
+  async del(req, res, next) {
+    try {
+      const data = await Model.del(req.params.id);
+      res.send(data);
+    } catch (error) {
+      next(error);
+    }
+  }
 };
