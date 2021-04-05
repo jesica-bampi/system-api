@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     date_updated: {
       type: DataTypes.DATEONLY,
-      allowNull: true,
+      allowNull: false,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_DATE')
     },
     quantity: {

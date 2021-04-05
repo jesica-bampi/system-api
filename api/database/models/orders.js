@@ -28,7 +28,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     date_update: {
       type: DataTypes.DATEONLY,
-      allowNull: true,
+      allowNull: false,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_DATE')
     },
     paymente_type_id: {
