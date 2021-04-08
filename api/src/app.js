@@ -14,6 +14,7 @@ const pay_titles = require("./routes/pay_titles");
 const payment_types = require("./routes/payment_types");
 const products = require("./routes/products");
 const receive_titles = require("./routes/receive_titles");
+const stocks = require("./routes/stocks");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -28,5 +29,6 @@ app.use("/pay_titles", pay_titles);
 app.use("/payment_types", payment_types);
 app.use("/products", products);
 app.use("/receive_titles", receive_titles);
+app.use("/stocks", stocks);
 
 module.exports = app;
