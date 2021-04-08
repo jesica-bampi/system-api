@@ -12,6 +12,7 @@ const order_items = require("./routes/order_items");
 const orders = require("./routes/orders");
 const pay_titles = require("./routes/pay_titles");
 const payment_types = require("./routes/payment_types");
+const products = require("./routes/products");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -24,5 +25,6 @@ app.use("/order/items", order_items);
 app.use("/orders", orders);
 app.use("/pay_titles", pay_titles);
 app.use("/payment_types", payment_types);
+app.use("/products", products);
 
 module.exports = app;
